@@ -30,7 +30,7 @@ fun discriminant(a: Double, b: Double, c: Double) = sqr(b) - 4 * a * c
  * Поиск одного из корней квадратного уравнения
  */
 fun quadraticEquationRoot(a: Double, b: Double, c: Double) =
-    (-b + sqrt(discriminant(a, b, c))) / (2 * a)
+        (-b + sqrt(discriminant(a, b, c))) / (2 * a)
 
 /**
  * Пример
@@ -70,7 +70,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = 3600 * hours + minute
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
-    val vershokToMeter: Double = 0.04445
+    val vershokToMeter = 0.04445
     val sagenesToMeters: Double = sagenes * 48 * vershokToMeter
     val arshinesToMeters: Double = arshins * 48 / 3 * vershokToMeter
     val vershoksToMeters: Double = vershoks * vershokToMeter
@@ -115,7 +115,7 @@ fun thirdDigit(number: Int): Int {
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
-    (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
+        (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
 
 /**
  * Простая
@@ -124,12 +124,24 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double =
-    (initial + initial * percent.toDouble()) * percent.toDouble().pow(2)
+fun accountInThreeYears(initial: Int, percent: Int): Double {
+    val percentNorm: Double = percent / 100.0
+    return initial * (1 + percentNorm).pow(3)
+}
+
 /**
  * Простая
  *
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = TODO()
+fun numberRevert(number: Int): Int {
+    val first: Int = number % 10
+    val second: Int = (number % 100) / 10
+    val third: Int = number / 100
+    return first * 100 + second * 10 + third
+}
+
+// my fun
+
+fun myFun(x: Double, y: Double): Boolean = x > y
