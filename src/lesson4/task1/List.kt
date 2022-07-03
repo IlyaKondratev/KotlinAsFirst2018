@@ -3,6 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
+import java.util.*
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
@@ -11,15 +14,15 @@ import kotlin.math.sqrt
  * Найти все корни уравнения x^2 = y
  */
 fun sqRoots(y: Double) =
-        when {
-            y < 0 -> listOf()
-            y == 0.0 -> listOf(0.0)
-            else -> {
-                val root = sqrt(y)
-                // Результат!
-                listOf(-root, root)
-            }
+    when {
+        y < 0 -> listOf()
+        y == 0.0 -> listOf(0.0)
+        else -> {
+            val root = sqrt(y)
+            // Результат!
+            listOf(-root, root)
         }
+    }
 
 /**
  * Пример
@@ -93,7 +96,7 @@ fun squares(vararg array: Int) = squares(array.toList()).toTypedArray()
  * "А роза упала на лапу Азора" является палиндромом.
  */
 fun isPalindrome(str: String): Boolean {
-    val lowerCase = str.toLowerCase().filter { it != ' ' }
+    val lowerCase = str.lowercase(Locale.getDefault()).filter { it != ' ' }
     for (i in 0..lowerCase.length / 2) {
         if (lowerCase[i] != lowerCase[lowerCase.length - i - 1]) return false
     }
@@ -115,14 +118,29 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var sqrAbs = 0.0
+    for (el in v) {
+        sqrAbs += sqr(el)
+    }
+    return sqrt(sqrAbs)
+}
 
+//fun absL(v: List<Double>): Double = v.fold(initial = 0.0, operation = fun(acc: Double, r: Double) = acc + sqr(r))
+
+//fun absL2(v: List<Double>): Double = v.fold(0.0) { acc, el -> acc + sqr(el) }
 /**
  * Простая
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    val sum = list.sum()
+    val count = list.size
+    return if (count != 0) sum / count else 0.0
+}
+
+//fun mean2(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
 
 /**
  * Средняя
@@ -132,7 +150,16 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val avg = mean(list)
+    for (i in 0 until list.size) {
+        list[i] = list[i] - avg
+    }
+    return list
+}
+
+//fun center2(list: MutableList<Double>): MutableList<Double> = list.map { el -> el - mean(list) }.toMutableList()
+
 
 /**
  * Средняя
@@ -141,7 +168,13 @@ fun center(list: MutableList<Double>): MutableList<Double> = TODO()
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.0.
  */
-fun times(a: List<Double>, b: List<Double>): Double = TODO()
+fun times(a: List<Double>, b: List<Double>): Double {
+    val c: MutableList<Double> = mutableListOf()
+    for (i in a.indices) {
+        c.add(a[i] * b[i])
+    }
+    return c.sum()
+}
 
 /**
  * Средняя
@@ -151,7 +184,13 @@ fun times(a: List<Double>, b: List<Double>): Double = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double = TODO()
+fun polynom(p: List<Double>, x: Double): Double {
+    val c: MutableList<Double> = mutableListOf()
+    for ((power, el) in p.withIndex()) {
+        c.add(el * x.pow(power))
+    }
+    return c.sum()
+}
 
 /**
  * Средняя

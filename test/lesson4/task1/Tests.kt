@@ -19,19 +19,19 @@ class Tests {
         assertEquals(listOf<Double>(), biRoots(0.0, 0.0, 1.0))
         assertEquals(listOf<Double>(), biRoots(0.0, 1.0, 2.0))
         assertArrayEquals(
-                listOf(-2.0, 2.0).toDoubleArray(),
-                biRoots(0.0, 1.0, -4.0).toDoubleArray(),
-                1e-5)
+            listOf(-2.0, 2.0).toDoubleArray(),
+            biRoots(0.0, 1.0, -4.0).toDoubleArray(),
+            1e-5)
         assertEquals(listOf<Double>(), biRoots(1.0, -2.0, 4.0))
         assertArrayEquals(
-                listOf(-1.0, 1.0).toDoubleArray(),
-                biRoots(1.0, -2.0, 1.0).toDoubleArray(),
-                1e-5)
+            listOf(-1.0, 1.0).toDoubleArray(),
+            biRoots(1.0, -2.0, 1.0).toDoubleArray(),
+            1e-5)
         assertEquals(listOf<Double>(), biRoots(1.0, 3.0, 2.0))
         assertArrayEquals(
-                listOf(-2.0, -1.0, 1.0, 2.0).toDoubleArray(),
-                biRoots(1.0, -5.0, 4.0).sorted().toDoubleArray(),
-                1e-5)
+            listOf(-2.0, -1.0, 1.0, 2.0).toDoubleArray(),
+            biRoots(1.0, -5.0, 4.0).sorted().toDoubleArray(),
+            1e-5)
     }
 
     @Test
@@ -92,6 +92,25 @@ class Tests {
 
     @Test
     @Tag("Easy")
+    fun absL() {
+        assertEquals(0.0, abs(listOf()), 1e-5)
+        assertEquals(3.0, abs(listOf(3.0)), 1e-5)
+        assertEquals(5.0, abs(listOf(3.0, -4.0)), 1e-5)
+        assertEquals(8.774964, abs(listOf(4.0, -5.0, 6.0)), 1e-5)
+    }
+
+    @Test
+    @Tag("Easy")
+    fun absL2() {
+        assertEquals(0.0, abs(listOf()), 1e-5)
+        assertEquals(3.0, abs(listOf(3.0)), 1e-5)
+        assertEquals(5.0, abs(listOf(3.0, -4.0)), 1e-5)
+        assertEquals(8.774964, abs(listOf(4.0, -5.0, 6.0)), 1e-5)
+    }
+
+
+    @Test
+    @Tag("Easy")
     fun mean() {
         assertEquals(0.0, mean(listOf()), 1e-5)
         assertEquals(1.0, mean(listOf(1.0)), 1e-5)
@@ -101,20 +120,21 @@ class Tests {
 
     @Test
     @Tag("Normal")
-    fun center() {
+    fun center2() {
         assertEquals(listOf<Double>(), center(mutableListOf()))
         assertArrayEquals(
-                listOf(0.0).toDoubleArray(),
-                center(mutableListOf(3.14)).toDoubleArray(),
-                1e-5)
+            listOf(0.0).toDoubleArray(),
+            center(mutableListOf(3.14)).toDoubleArray(),
+            1e-5)
+        println()
         assertArrayEquals(
-                listOf(1.0, -1.0, 0.0).toDoubleArray(),
-                center(mutableListOf(3.0, 1.0, 2.0)).toDoubleArray(),
-                1e-5)
+            listOf(1.0, -1.0, 0.0).toDoubleArray(),
+            center(mutableListOf(3.0, 1.0, 2.0)).toDoubleArray(),
+            1e-5)
         assertArrayEquals(
-                listOf(-3.0, -1.0, 4.0, 5.0, -5.0).toDoubleArray(),
-                center(mutableListOf(0.0, 2.0, 7.0, 8.0, -2.0)).toDoubleArray(),
-                1e-5)
+            listOf(-3.0, -1.0, 4.0, 5.0, -5.0).toDoubleArray(),
+            center(mutableListOf(0.0, 2.0, 7.0, 8.0, -2.0)).toDoubleArray(),
+            1e-5)
         val toMutate = mutableListOf(-3.0, -1.0, 4.0, 5.0, -5.0)
         assertTrue(toMutate === center(toMutate)) { "You should mutate an input list, not create a copy" }
     }
