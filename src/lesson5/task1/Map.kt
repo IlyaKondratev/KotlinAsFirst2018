@@ -94,7 +94,17 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val mapC = mutableMapOf<String, String>()
+    for ((key, value) in mapA) {
+        if (mapB.containsKey(key) && (mapB[key] != value)) {
+            mapC[key] = "${value}, ${mapB[key]}"
+        } else {
+            mapC[key] = value
+        }
+    }
+    return mapB + mapC.toMap()
+}
 
 /**
  * Простая
@@ -106,7 +116,17 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val mapOut = mutableMapOf<Int, List<String>>()
+    for ((key, value) in grades) {
+        if (mapOut.containsKey(value) && mapOut[value] != null) mapOut[value] = mapOut[value]!! + key
+        else mapOut[value] = listOf(key)
+    }
+    for (key in mapOut.keys) {
+        mapOut[key] = mapOut[key]?.sorted() ?: listOf()
+    }
+    return mapOut.toMap()
+}
 
 /**
  * Простая
@@ -118,8 +138,22 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b.filter { a[it.key] == it.value } == a
 
+fun containsIn2(a: Map<String, String>, b: Map<String, String>): Boolean {
+    val c = mutableMapOf<String, String>()
+    for ((key, value) in b) {
+        if (a[key] == value) c[key] = value
+    }
+    println(c.toMap())
+    return c.toMap() == a
+}
+
+//fun main() {
+//    val a = mapOf("a" to "z")
+//    val b = mapOf(null to "z")
+//    containsIn2(a, b)
+//}
 /**
  * Средняя
  *
@@ -130,7 +164,20 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val mapR = mutableMapOf<String, Pair<Int, Double>>()
+    for ((first, second) in stockPrices) {
+        //if (first != null && second != null) {
+        if (!mapR.containsKey(first)) mapR[first] = Pair(1, second)
+        else mapR[first] = Pair((mapR[first]?.first!!) + 1, mapR[first]?.second!! + second)
+        //}
+    }
+    val mapOut = mutableMapOf<String, Double>()
+    for (key in mapR.keys) {
+        mapOut[key] = mapR[key]?.second!! / mapR[key]?.first!!
+    }
+    return mapOut.toMap()
+}
 
 /**
  * Средняя

@@ -141,20 +141,37 @@ class Tests {
         )
         // TODO: Sort the values here or let the students do it?
         assertEquals(
-                mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат")),
+                mapOf(5 to listOf("Семён", "Михаил").sorted(), 3 to listOf("Марат")),
                 buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
         )
         assertEquals(
-                mapOf(3 to listOf("Семён", "Михаил", "Марат")),
+                mapOf(3 to listOf("Семён", "Михаил", "Марат").sorted()),
                 buildGrades(mapOf("Марат" to 3, "Семён" to 3, "Михаил" to 3))
         )
     }
+
+//    @Test
+//    fun buildGrades() {
+//        assertEquals(mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат")),
+//                buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5)))
+//        assertEquals(mapOf<Int, List<String>>(), buildGrades(mapOf()))
+//        assertEquals(mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат")),
+//                buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5)))
+//    }
+
 
     @Test
     @Tag("Easy")
     fun containsIn() {
         assertTrue(containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")))
         assertFalse(containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")))
+    }
+
+    @Test
+    @Tag("Easy")
+    fun containsIn2() {
+        assertTrue(containsIn2(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")))
+        assertFalse(containsIn2(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")))
     }
 
     @Test
@@ -176,6 +193,12 @@ class Tests {
                 mapOf("MSFT" to 150.0, "NFLX" to 45.0),
                 averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0, "NFLX" to 50.0))
         )
+//        val a = mapOf("MSFT" to 150.0, "NFLX" to 45.0)
+//        val b = mapOf(a["hhh"] to 45.0, "NFLX" to a["hhh"]).toList()
+//        assertEquals(
+//                mapOf("NFLX" to 45.0),
+//                averageStockPrice(b as List<Pair<String, Double>>)
+//        )
     }
 
     @Test
