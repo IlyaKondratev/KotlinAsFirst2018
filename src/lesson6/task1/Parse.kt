@@ -49,12 +49,10 @@ fun main(args: Array<String>) {
         val seconds = timeStrToSeconds(line)
         if (seconds == -1) {
             println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        }
-        else {
+        } else {
             println("Прошло секунд с начала суток: $seconds")
         }
-    }
-    else {
+    } else {
         println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
     }
 }
@@ -71,7 +69,40 @@ fun main(args: Array<String>) {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+
+fun isLeapYear(year: Int): Boolean = ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)
+
+fun daysInMonth(month: Int, year: Int): Int = when {
+    (month == 2) && isLeapYear(year) -> 29
+    (month == 2) -> 28
+    (month <= 7) && (month % 2 == 0) -> 30
+    (month <= 7) -> 31
+    (month % 2 == 0) -> 31
+    else -> 30
+}
+
+fun dateStrToDigit(str: String): String {
+    val parsed = str.split(" ")
+    try {
+        val day = parsed[0].toInt()
+        val year = parsed[2].toInt()
+
+        val mapOfMonths = mapOf(
+            "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
+        )
+
+        val month = mapOfMonths[parsed[1]] ?: return ""
+        if (year <= 0) return ""
+        val isDayValid = day in 1..daysInMonth(month, year)
+        if (!isDayValid) return ""
+
+        return String.format("%02d.%02d.%04d", day, month, year)
+
+    } catch (e: Exception) {
+        return ""
+    }
+}
 
 /**
  * Средняя

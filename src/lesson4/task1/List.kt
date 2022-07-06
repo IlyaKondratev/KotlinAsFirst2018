@@ -287,7 +287,8 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = digits.foldIndexed(0) { index, acc, r -> acc + r * myPow(base, digits.size - 1 - index) }
+fun decimal(digits: List<Int>, base: Int): Int =
+    digits.foldIndexed(0) { index, acc, r -> acc + r * myPow(base, digits.size - 1 - index) }
 
 
 /**
