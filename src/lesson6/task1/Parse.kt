@@ -89,8 +89,8 @@ fun dateStrToDigit(str: String): String {
         val year = parsed[2].toInt()
 
         val mapOfMonths = mapOf(
-                "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
-                "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
+            "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
         )
 
         val month = mapOfMonths[parsed[1]] ?: return ""
@@ -124,8 +124,8 @@ fun dateDigitToStr(digital: String): String {
         val year = parsed[2].toInt()
 
         val mapOfMonths = mapOf(
-                1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
-                7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
+            1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
+            7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
         )
 
         val monthStr = mapOfMonths[monthInt] ?: return ""
@@ -167,9 +167,9 @@ fun flattenPhoneNumber(phone: String): String {
     }
 
     if (charPhone.any { !setOfValidChars.contains(it) }) return ""
-    charPhone.addAll(charPhone.filter { setOfUsefulChars.contains(it) })
+    phoneOut.addAll(charPhone.filter { setOfUsefulChars.contains(it) })
 
-    return charPhone.toString()
+    return phoneOut.joinToString(separator = "")
 }
 
 /**
@@ -182,7 +182,16 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val tries = jumps.split(" ")
+    val symbolsToDelete = setOf("-", "%")
+    return try {
+        val goodTries = tries.filter { !symbolsToDelete.contains(it) }.map { el -> el.toInt() }
+        goodTries.max()
+    } catch (e: Exception) {
+        -1
+    }
+}
 
 /**
  * Сложная
@@ -194,7 +203,30 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    val tries = jumps.split(" ")
+    val meaningfulSymbols = setOf('-', '%', '+')
+    val mapOfResults = mutableMapOf<Int, Set<Char>>()
+    try {
+        for (i in tries.indices - 1) {
+            if (i % 2 == 0) {
+                mapOfResults[tries[i].toInt()] = tries[i + 1].toSet()
+            }
+        }
+        val goodTries = mutableListOf<Int>()
+        for ((key, value) in mapOfResults) {
+            when {
+                value.any { !meaningfulSymbols.contains(it) } -> return -1
+                value.contains('+') -> goodTries.add(key)
+                else -> continue
+            }
+        }
+        return goodTries.max()
+    } catch (e: Exception) {
+        return -1
+    }
+
+}
 
 /**
  * Сложная
