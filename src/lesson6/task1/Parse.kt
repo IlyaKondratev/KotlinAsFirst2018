@@ -83,13 +83,14 @@ fun daysInMonth(month: Int, year: Int): Int = when {
 
 fun dateStrToDigit(str: String): String {
     val parsed = str.split(" ")
+    if (parsed.size != 3) return ""
     try {
         val day = parsed[0].toInt()
         val year = parsed[2].toInt()
 
         val mapOfMonths = mapOf(
-            "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
-            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
+                "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+                "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
         )
 
         val month = mapOfMonths[parsed[1]] ?: return ""
@@ -97,7 +98,7 @@ fun dateStrToDigit(str: String): String {
         val isDayValid = day in 1..daysInMonth(month, year)
         if (!isDayValid) return ""
 
-        return String.format("%02d.%02d.%04d", day, month, year)
+        return String.format("%02d.%02d.%4d", day, month, year)
 
     } catch (e: Exception) {
         return ""
@@ -114,7 +115,30 @@ fun dateStrToDigit(str: String): String {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    val parsed = digital.split(".")
+    if (parsed.size != 3) return ""
+    try {
+        val day = parsed[0].toInt()
+        val monthInt = parsed[1].toInt()
+        val year = parsed[2].toInt()
+
+        val mapOfMonths = mapOf(
+                1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
+                7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
+        )
+
+        val monthStr = mapOfMonths[monthInt] ?: return ""
+        if (year <= 0) return ""
+        val isDayValid = day in 1..daysInMonth(monthInt, year)
+        if (!isDayValid) return ""
+
+        return String.format("%d %s %d", day, monthStr, year)
+
+    } catch (e: Exception) {
+        return ""
+    }
+}
 
 /**
  * Средняя
@@ -128,7 +152,25 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val setOfValidChars = setOf('-', '(', ')', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ')
+    val setOfUsefulChars = setOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
+
+    val phoneOut = mutableListOf<Char>()
+
+    val charPhone = phone.trim().toMutableList()
+    if (charPhone[0] == '+') {
+        phoneOut.add('+')
+        charPhone.removeFirst()
+    } else if (charPhone.contains('+')) {
+        return ""
+    }
+
+    if (charPhone.any { !setOfValidChars.contains(it) }) return ""
+    charPhone.addAll(charPhone.filter { setOfUsefulChars.contains(it) })
+
+    return charPhone.toString()
+}
 
 /**
  * Средняя
