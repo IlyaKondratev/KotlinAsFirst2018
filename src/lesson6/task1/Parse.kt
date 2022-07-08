@@ -42,20 +42,20 @@ fun timeSecondsToStr(seconds: Int): String {
 /**
  * Пример: консольный ввод
  */
-fun main(args: Array<String>) {
-    println("Введите время в формате ЧЧ:ММ:СС")
-    val line = readLine()
-    if (line != null) {
-        val seconds = timeStrToSeconds(line)
-        if (seconds == -1) {
-            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
-        } else {
-            println("Прошло секунд с начала суток: $seconds")
-        }
-    } else {
-        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
-    }
-}
+//fun main(args: Array<String>) {
+//    println("Введите время в формате ЧЧ:ММ:СС")
+//    val line = readLine()
+//    if (line != null) {
+//        val seconds = timeStrToSeconds(line)
+//        if (seconds == -1) {
+//            println("Введённая строка $line не соответствует формату ЧЧ:ММ:СС")
+//        } else {
+//            println("Прошло секунд с начала суток: $seconds")
+//        }
+//    } else {
+//        println("Достигнут <конец файла> в процессе чтения строки. Программа прервана")
+//    }
+//}
 
 
 /**
@@ -89,8 +89,8 @@ fun dateStrToDigit(str: String): String {
         val year = parsed[2].toInt()
 
         val mapOfMonths = mapOf(
-            "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
-            "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
+                "января" to 1, "февраля" to 2, "марта" to 3, "апреля" to 4, "мая" to 5, "июня" to 6,
+                "июля" to 7, "августа" to 8, "сентября" to 9, "октября" to 10, "ноября" to 11, "декабря" to 12
         )
 
         val month = mapOfMonths[parsed[1]] ?: return ""
@@ -104,6 +104,7 @@ fun dateStrToDigit(str: String): String {
         return ""
     }
 }
+
 
 /**
  * Средняя
@@ -124,8 +125,8 @@ fun dateDigitToStr(digital: String): String {
         val year = parsed[2].toInt()
 
         val mapOfMonths = mapOf(
-            1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
-            7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
+                1 to "января", 2 to "февраля", 3 to "марта", 4 to "апреля", 5 to "мая", 6 to "июня",
+                7 to "июля", 8 to "августа", 9 to "сентября", 10 to "октября", 11 to "ноября", 12 to "декабря"
         )
 
         val monthStr = mapOfMonths[monthInt] ?: return ""
@@ -168,6 +169,26 @@ fun flattenPhoneNumber(phone: String): String {
 
     if (charPhone.any { !setOfValidChars.contains(it) }) return ""
     phoneOut.addAll(charPhone.filter { setOfUsefulChars.contains(it) })
+
+    return phoneOut.joinToString(separator = "")
+}
+
+fun flattenPhoneNumber2(phone: String): String {
+    val phoneOut = mutableListOf<Char>()
+
+    val charPhone = phone.trim().toMutableList()
+    if (charPhone[0] == '+') {
+        phoneOut.add('+')
+        charPhone.removeFirst()
+    } else if (charPhone.contains('+')) {
+        return ""
+    }
+
+    val regexValidChars = Regex("""[\d()\-\s]""")
+    val regexUsefulChars = Regex("""\d""")
+
+    if (charPhone.any { regexValidChars.find(it.toString()) == null }) return ""
+    phoneOut.addAll(charPhone.filter { regexUsefulChars.find(it.toString()) != null })
 
     return phoneOut.joinToString(separator = "")
 }
@@ -237,7 +258,25 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val inputList = expression.trim().split(" ").toMutableList()
+    val outList = mutableListOf<Int>()
+    if (inputList.any { it.contains(Regex("""[+-]\d+|\d+[+-]""")) }) throw IllegalArgumentException("")
+    try {
+        outList.add(inputList[0].toInt())
+        inputList.removeFirst()
+        for (i in inputList.indices) {
+            if (i % 2 == 0) {
+                if (inputList[i] == "+") outList.add(inputList[i + 1].toInt())
+                else if (inputList[i] == "-") outList.add(-inputList[i + 1].toInt())
+                else throw IllegalArgumentException("")
+            }
+        }
+        return outList.sum()
+    } catch (e: Exception) {
+        throw IllegalArgumentException("")
+    }
+}
 
 /**
  * Сложная
@@ -248,7 +287,15 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val inputStr = str.trim().lowercase()
+    val regExp = Regex("""([а-я]+)\s\1""")
+    return regExp.find(inputStr)?.range?.first ?: -1
+}
+
+fun firstDuplicateIndex2(str: String): Int = Regex("""([а-я]+)\s\1""").find(str.trim().lowercase())?.range?.first ?: -1
+
+
 
 /**
  * Сложная
