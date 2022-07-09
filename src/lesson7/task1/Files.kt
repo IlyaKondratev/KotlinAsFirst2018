@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.util.*
 
 /**
  * Пример
@@ -32,8 +33,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
                 if (word.length + currentLineLength >= lineLength) {
                     outputStream.newLine()
                     currentLineLength = 0
-                }
-                else {
+                } else {
                     outputStream.write(" ")
                     currentLineLength++
                 }
@@ -54,7 +54,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val outMap = mutableMapOf<String, Int>()
+    val text = File(inputName).readText().lowercase()
+    for (el in substrings) {
+        outMap[el] = Regex(el.lowercase()).findAll(text).count()
+    }
+    return outMap.toMap()
+}
 
 
 /**
@@ -71,7 +78,30 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val chars = File(inputName).readText().toCharArray()
+    val outFile = File(outputName).bufferedWriter()
+    val regExp = Regex("""[ЖжЧчШшЩщ]""")
+    var flagToChange = false
+    for (c in chars) {
+        if (regExp.find(c.toString()) != null) {
+            flagToChange = true
+            outFile.write(c.toString())
+        } else if (flagToChange) {
+            when (c) {
+                'ы' -> outFile.write("и")
+                'Ы' -> outFile.write("И")
+                'я' -> outFile.write("а")
+                'Я' -> outFile.write("А")
+                'ю' -> outFile.write("у")
+                'Ю' -> outFile.write("У")
+                else -> outFile.write(c.toString())
+            }
+            flagToChange = false
+        } else {
+            outFile.write(c.toString())
+        }
+    }
+    outFile.close()
 }
 
 /**

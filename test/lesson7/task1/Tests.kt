@@ -58,18 +58,21 @@ Basic, Ruby, Swift.
     @Test
     @Tag("Normal")
     fun countSubstrings() {
-        assertEquals(mapOf("РАЗНЫЕ" to 2, "ные" to 2, "Неряшливость" to 1, "е" to 49, "эволюция" to 0),
-                countSubstrings("input/substrings_in1.txt", listOf("РАЗНЫЕ", "ные", "Неряшливость", "е", "эволюция")))
-        assertEquals(mapOf("Карминовый" to 2, "Некрасивый" to 2, "белоглазый" to 1),
-                countSubstrings("input/substrings_in1.txt", listOf("Карминовый", "Некрасивый", "белоглазый")))
+        assertEquals(
+            mapOf("РАЗНЫЕ" to 2, "ные" to 2, "Неряшливость" to 1, "е" to 49, "эволюция" to 0),
+            countSubstrings("input/substrings_in1.txt", listOf("РАЗНЫЕ", "ные", "Неряшливость", "е", "эволюция")))
+        assertEquals(
+            mapOf("Карминовый" to 2, "Некрасивый" to 2, "белоглазый" to 1),
+            countSubstrings("input/substrings_in1.txt", listOf("Карминовый", "Некрасивый", "белоглазый")))
     }
 
     @Test
     @Tag("Normal")
     fun sibilants() {
         sibilants("input/sibilants_in1.txt", "temp.txt")
-        assertFileContent("temp.txt",
-"""/**
+        assertFileContent(
+            "temp.txt",
+            """/**
  * Простая
  *
  * В русском языке, как правило, после букв Ж, Ч, Ш, Щ пишется И, А, У, а не Ы, Я, Ю.
@@ -82,7 +85,8 @@ Basic, Ruby, Swift.
  * Исключения (жУри, броШУра, параШут) в рамках данного задания обрабатывать не нужно
  *
  * жИ шИ ЖИ Ши ЖА шА Жа ша жу шу жу щу ча шу щу ща жа жи жи жу чу ча
- */""")
+ */"""
+        )
         File("temp.txt").delete()
     }
 
