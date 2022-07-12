@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task1
 
 import lesson1.task1.sqr
@@ -78,7 +79,7 @@ data class Circle(val center: Point, val radius: Double) {
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
     fun distance(other: Circle): Double =
-        if (center.distance(other.center) >= (radius + other.radius)) center.distance(other.center) - (radius + other.radius) else 0.0
+            if (center.distance(other.center) >= (radius + other.radius)) center.distance(other.center) - (radius + other.radius) else 0.0
 
     /**
      * Тривиальная
@@ -93,10 +94,10 @@ data class Circle(val center: Point, val radius: Double) {
  */
 data class Segment(val begin: Point, val end: Point) {
     override fun equals(other: Any?) =
-        other is Segment && (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
+            other is Segment && (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
 
     override fun hashCode() =
-        begin.hashCode() + end.hashCode()
+            begin.hashCode() + end.hashCode()
 }
 
 /**
@@ -105,7 +106,17 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
+fun diameter(vararg points: Point): Segment {
+    if (points.size < 2) throw IllegalArgumentException("")
+    val mapOfSegments = mutableMapOf<Double, Segment>()
+    for (p1 in points) {
+        for (p2 in points) {
+            mapOfSegments[p1.distance(p2)] = Segment(p1, p2)
+        }
+    }
+    val max = mapOfSegments.keys.max()
+    return mapOfSegments[max]!!
+}
 
 /**
  * Простая
@@ -113,7 +124,8 @@ fun diameter(vararg points: Point): Segment = TODO()
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle =
+        Circle(Point((diameter.begin.x + diameter.end.x) / 2, (diameter.begin.y + diameter.end.y) / 2), diameter.begin.distance(diameter.end) / 2)
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -126,7 +138,7 @@ class Line private constructor(val b: Double, val angle: Double) {
         require(angle >= 0 && angle < PI) { "Incorrect line angle: $angle" }
     }
 
-    constructor(point: Point, angle: Double): this(point.y * cos(angle) - point.x * sin(angle), angle)
+    constructor(point: Point, angle: Double) : this(point.y * cos(angle) - point.x * sin(angle), angle)
 
     /**
      * Средняя
