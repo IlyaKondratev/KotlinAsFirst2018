@@ -28,6 +28,7 @@ class Tests {
         assertEquals("g6", Square(7, 6).notation())
         assertEquals("a8", Square(1, 8).notation())
         assertEquals("h1", Square(8, 1).notation())
+        assertEquals("", Square(9, 1).notation())
     }
 
     @Test
@@ -37,6 +38,7 @@ class Tests {
         assertEquals(Square(5, 5), square("e5"))
         assertEquals(Square(6, 8), square("f8"))
         assertEquals(Square(4, 1), square("d1"))
+        assertThrows(IllegalArgumentException::class.java) { square("d10") }
     }
 
     @Test

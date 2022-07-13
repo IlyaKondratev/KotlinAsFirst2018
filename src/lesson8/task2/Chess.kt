@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson8.task2
 
 /**
@@ -21,18 +22,21 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = if (row !in 1..8) ""
-    else when (column) {
-        1 -> "a${row}"
-        2 -> "b${row}"
-        3 -> "c${row}"
-        4 -> "d${row}"
-        5 -> "e${row}"
-        6 -> "f${row}"
-        7 -> "g${row}"
-        8 -> "h${row}"
-        else -> ""
-    }
+
+//    fun notation(): String = if (row !in 1..8) ""
+//    else when (column) {
+//        1 -> "a${row}"
+//        2 -> "b${row}"
+//        3 -> "c${row}"
+//        4 -> "d${row}"
+//        5 -> "e${row}"
+//        6 -> "f${row}"
+//        7 -> "g${row}"
+//        8 -> "h${row}"
+//        else -> ""
+//    }
+
+    fun notation(): String = if ((row !in 1..8) || (column !in 1..8)) "" else "${(column.toChar().code + 96).toChar()}${row}"
 }
 
 /**
@@ -42,7 +46,12 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    if (notation.length > 2) throw IllegalArgumentException("")
+    val regExp = Regex("""[a-h][1-8]""")
+    if (regExp.find(notation) == null) throw IllegalArgumentException("")
+    return Square((notation.first().code - 96), notation.last().code - 48)
+}
 
 /**
  * Простая
